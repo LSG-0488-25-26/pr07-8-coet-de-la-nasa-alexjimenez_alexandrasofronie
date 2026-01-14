@@ -16,7 +16,8 @@ import com.example.pr06_lazycomponents.viewmodel.PokemonViewModel
 
 @Composable
 fun PokemonListScreen(
-    onPokemonClick: (Pokemon) -> Unit
+    onPokemonClick: (Pokemon) -> Unit,
+    viewModel: PokemonViewModel
 ) {
     val viewModel: PokemonViewModel = viewModel()
     val pokemonList = viewModel.pokemonList.value ?: emptyList()
