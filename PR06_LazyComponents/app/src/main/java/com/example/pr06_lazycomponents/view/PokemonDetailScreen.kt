@@ -134,7 +134,7 @@ fun PokemonDetailScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(13.dp))
         }
 
         item {
@@ -146,8 +146,6 @@ fun PokemonDetailScreen(
             ) {
                 Text("Volver a la lista")
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
