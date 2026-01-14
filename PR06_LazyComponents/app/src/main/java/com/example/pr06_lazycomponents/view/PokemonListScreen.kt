@@ -30,7 +30,7 @@ fun PokemonListScreen(
             text = "Pokédex First Version",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
