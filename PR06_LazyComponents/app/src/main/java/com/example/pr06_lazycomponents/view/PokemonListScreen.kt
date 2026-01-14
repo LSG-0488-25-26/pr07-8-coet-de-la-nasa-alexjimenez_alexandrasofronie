@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.PokemonItem
 import com.example.pr06_lazycomponents.viewmodel.PokemonViewModel
@@ -25,8 +27,10 @@ fun PokemonListScreen(
         modifier = Modifier.fillMaxSize()
     ){
         Text(
-            text = "Pokédex",
+            text = "Pokédex First Version",
             style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Left,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
