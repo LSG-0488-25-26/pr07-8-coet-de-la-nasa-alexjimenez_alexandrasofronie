@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,11 +43,16 @@ fun PokemonDetailScreen(
                 modifier = Modifier.size(250.dp),
                 shape = CircleShape
             ) {
-                Image(
-                    painter = painterResource(id = pokemon.image),
-                    contentDescription = "Imagen de ${pokemon.name}",
-                    modifier = Modifier.size(200.dp)
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center //centramos la imagen de cada Pokemon en su circulo
+                ) {
+                    Image(
+                        painter = painterResource(id = pokemon.image),
+                        contentDescription = "Imagen de ${pokemon.name}",
+                        modifier = Modifier.size(195.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
