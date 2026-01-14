@@ -25,8 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.BorderStroke
 import com.example.pr06_lazycomponents.model.Pokemon
 import com.example.pr06_lazycomponents.view.components.StatItem
+import com.example.pr06_lazycomponents.ui.theme.getTypeColor
 
 @Composable
 fun PokemonDetailScreen(
@@ -41,7 +43,9 @@ fun PokemonDetailScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Card(
                 modifier = Modifier.size(250.dp),
-                shape = CircleShape
+                shape = CircleShape,
+                border = BorderStroke(4.dp, getTypeColor(pokemon.type))
+
             ) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
