@@ -21,31 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.pr06_lazycomponents.model.Pokemon
-
-//función para añadir un borde de color a cad card en funcion de su tipo
-fun getTypeColor(type: String): Color {
-    return when (type.lowercase()) {
-        "grass" -> Color(0xFF78C850)      // Verde
-        "fire" -> Color(0xFFF08030)       // Rojo/Naranja
-        "water" -> Color(0xFF6890F0)      // Azul
-        "electric" -> Color(0xFFF8D030)   // Amarillo
-        "poison" -> Color(0xFFA040A0)     // Morado
-        "normal" -> Color(0xFFA8A878)     // Beige
-        "fairy" -> Color(0xFFEE99AC)      // Rosa
-        "rock" -> Color(0xFFB8A038)       // Marrón
-        "flying" -> Color(0xFFA890F0)     // Azul claro
-        "fighting" -> Color(0xFFC03028)   // Rojo oscuro
-        "psychic" -> Color(0xFFF85888)    // Rosa fuerte
-        "bug" -> Color(0xFFA8B820)        // Verde lima
-        "ghost" -> Color(0xFF705898)      // Morado oscuro
-        "steel" -> Color(0xFFB8B8D0)      // Gris
-        "ice" -> Color(0xFF98D8D8)        // Celeste
-        "dragon" -> Color(0xFF7038F8)     // Morado intenso
-        "dark" -> Color(0xFF705848)       // Marrón oscuro
-        "ground" -> Color(0xFFE0C068)     // Amarillo tierra
-        else -> Color.Gray                       // Color por defecto
-    }
-}
+import com.example.pr06_lazycomponents.ui.theme.getTypeColor
 
 @Composable
 fun PokemonItem(
@@ -56,7 +32,7 @@ fun PokemonItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        border = BorderStroke(3.dp, getTypeColor(pokemon.type))
+        border = BorderStroke(4.dp, getTypeColor(pokemon.type))
 
     ) {
         Row(
