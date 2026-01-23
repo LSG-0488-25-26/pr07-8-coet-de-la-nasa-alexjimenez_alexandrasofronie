@@ -1,20 +1,21 @@
-# 📱 Pokédex First Version - Aplicación de Lista de Pokémon
+# 🎬 MediaApp - Aplicación de Películas y Series
 
-Aplicación Pokédex desarrollada en **Kotlin** con **Jetpack Compose** siguiendo el patrón de arquitectura **MVVM** con componentes Lazy.
+Aplicación de contenido multimedia desarrollada en **Kotlin** con **Jetpack Compose** siguiendo el patrón de arquitectura **MVVM** con componentes Lazy.
 
 ## 📱 Descripción
 
-Pokédex First Version es una aplicación Android que muestra una lista interactiva de Pokémon con información detallada de cada uno, incluyendo estadísticas completas y características visuales según su tipo.
+MediaApp es una aplicación Android que muestra una lista interactiva de películas y series con información detallada de cada contenido, incluyendo detalles completos como director, reparto, duración, puntuación y sinopsis.
 
 ## ✨ Características
 
-- 📋 **Lista de Pokémon**: Visualización de 14 Pokémon con LazyColumn
-- 🎨 **Bordes de colores**: Cada Pokémon tiene un borde de color según su tipo
-- 📊 **Estadísticas detalladas**: HP, Ataque, Defensa, Ataque Especial, Defensa Especial y Velocidad
-- 🔢 **Cálculo de total**: Suma automática de todas las estadísticas
-- 🎯 **Vista detalle**: Pantalla completa con información ampliada de cada Pokémon
+- 📋 **Lista de Contenido**: Visualización de películas y series con LazyColumn
+- 🎬 **Diferenciación por tipo**: Distinción visual entre películas y series
+- 📊 **Información detallada**: Director, reparto, duración, año, puntuación y sinopsis
+- ⭐ **Sistema de valoración**: Puntuación del 0 al 10 para cada contenido
+- 🎯 **Vista detalle**: Pantalla completa con información ampliada de cada película/serie
 - 🧭 **Navegación fluida**: Sistema de navegación entre lista y detalle
 - 🎨 **Interfaz moderna**: Desarrollada con Jetpack Compose y Material Design 3
+- 🔄 **API en desarrollo**: Preparada para integrar datos desde API externa
 
 ## 🏗️ Arquitectura
 
@@ -22,18 +23,19 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 
 ```
 ├── model/
-│   └── Pokemon.kt              # Data classes (Pokemon y PokemonStats)
+│   ├── Media.kt                # Data classes (Media, MediaDetails, MediaType)
+│   └── Pokemon.kt              # [Deprecated] Modelo anterior
 ├── repository/
-│   └── PokemonRepository.kt    # Fuente de datos simulada
+│   └── MediaRepository.kt      # Fuente de datos (preparado para API)
 ├── view/
-│   ├── PokemonListScreen.kt    # Pantalla de lista
-│   ├── PokemonDetailScreen.kt  # Pantalla de detalle
+│   ├── MediaListScreen.kt      # Pantalla de lista de contenido
+│   ├── MediaDetailScreen.kt    # Pantalla de detalle
 │   └── components/
-│       └── PokemonItem.kt      # Componente de cada item
+│       └── MediaItem.kt        # Componente de cada item
 ├── viewmodel/
-│   └── PokemonViewModel.kt     # Lógica y gestión de estado
+│   └── MediaViewModel.kt       # Lógica y gestión de estado
 ├── ui/theme/
-│   ├── Color.kt                # Colores y función getTypeColor()
+│   ├── Color.kt                # Colores y estilos
 │   ├── Theme.kt                # Tema de la app
 │   └── Type.kt                 # Tipografía
 ├── Routes.kt                   # Sistema de navegación
@@ -49,27 +51,41 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 - **Navegación**: Navigation Compose
 - **Material Design 3**: Material3 Components
 - **Lazy Components**: LazyColumn para listas eficientes
+- **API**: En desarrollo (preparada para integración futura)
 
 ## 📋 Funcionalidades Técnicas
 
-### PokemonViewModel
-- Gestión de estado reactiva con LiveData
-- `_pokemonList`: LiveData para la lista de Pokémon
-- `_selectedPokemon`: LiveData para el Pokémon seleccionado
-- Funciones:
-  - `loadPokemon()`: Carga la lista desde el repositorio
-  - `selectPokemon()`: Selecciona un Pokémon para ver el detalle
+### Modelo de Datos (Media.kt)
+- **MediaType Enum**: Diferencia entre MOVIE y SERIES
+- **Media Data Class**: Clase principal con:
+  - `title`: Título del contenido
+  - `mediaType`: Tipo (Película o Serie)
+  - `genre`: Género (Acción, Drama, Comedia, etc.)
+  - `image`: Imagen de portada
+  - `year`: Año de lanzamiento
+  - `rating`: Puntuación del 0 al 10
+  - `description`: Sinopsis
+  - `details`: Detalles adicionales
 
-### Sistema de Colores por Tipo
-Función `getTypeColor()` centralizada en `Color.kt` que mapea cada tipo de Pokémon a su color característico:
-- 🟢 Grass (Verde)
-- 🔴 Fire (Rojo/Naranja)
-- 🔵 Water (Azul)
-- 🟡 Electric (Amarillo)
-- 🟣 Poison (Morado)
-- ⚪ Normal (Beige)
-- 🩷 Fairy (Rosa)
-- 🟤 Rock (Marrón)
+- **MediaDetails Data Class**: Información adicional con:
+  - `duration`: Duración del contenido
+  - `director`: Director
+  - `cast`: Lista de actores principales
+  - `seasons`: Número de temporadas (solo series)
+  - `episodes`: Número de episodios (solo series)
+
+### MediaViewModel
+- Gestión de estado reactiva con LiveData
+- `_mediaList`: LiveData para la lista de contenido
+- `_selectedMedia`: LiveData para el contenido seleccionado
+- Funciones:
+  - `loadMedia()`: Carga la lista desde el repositorio
+  - `selectMedia()`: Selecciona un contenido para ver el detalle
+
+### MediaRepository
+- Fuente de datos simulada (en desarrollo para API)
+- Datos de ejemplo de películas y series
+- Preparado para integración con API externa
 
 ### Navegación
 - Sistema de rutas con sealed class
@@ -78,24 +94,27 @@ Función `getTypeColor()` centralizada en `Color.kt` que mapea cada tipo de Pok�
 
 ### LazyColumn
 - Renderizado eficiente de la lista
-- `verticalArrangement` con espaciado de 11dp
+- `verticalArrangement` con espaciado personalizado
 - `contentPadding` para evitar que el último elemento se corte
 
 ## 🎮 Cómo Usar la App
 
-1. **Lista de Pokémon**: Visualiza todos los Pokémon disponibles
-2. **Selección**: Toca cualquier Pokémon para ver sus detalles
+1. **Lista de Contenido**: Visualiza todas las películas y series disponibles
+2. **Selección**: Toca cualquier película/serie para ver sus detalles completos
 3. **Vista Detalle**: 
-   - Imagen con borde de color según tipo
-   - Nombre y tipo
-   - Estadísticas completas (6 stats + total)
+   - Imagen de portada del contenido
+   - Título, año y género
+   - Valoración (del 0 al 10)
+   - Director y reparto principal
+   - Duración (para películas) o episodios/temporadas (para series)
+   - Sinopsis completa
 4. **Volver**: Botón "Volver a la lista" para regresar
 
 ## 🛠️ Instalación
 
 1. Clona el repositorio:
 ```bash
-git clone https://github.com/tu-usuario/pr06-lazy-components-alexjimenez_alexandrasofronie.git
+git clone https://github.com/tu-usuario/pr07-8-coet-de-la-nasa-alexjimenez_alexandrasofronie.git
 ```
 
 2. Abre el proyecto en **Android Studio**
@@ -103,6 +122,8 @@ git clone https://github.com/tu-usuario/pr06-lazy-components-alexjimenez_alexand
 3. Sincroniza las dependencias de Gradle
 
 4. Ejecuta la aplicación en un emulador o dispositivo físico
+
+5. **(Próximamente)** Configura la API key para acceso a datos externos
 
 ## 📦 Requisitos
 
@@ -114,30 +135,25 @@ git clone https://github.com/tu-usuario/pr06-lazy-components-alexjimenez_alexand
 
 ## 🎨 Capturas de Pantalla
 
-### Lista de Pokémon
-<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/PokemonList_Screen_Screenshot.png" width="250">
+### Lista de Contenido
+*(Capturas en desarrollo)*
 
-### Detalle de Pokémon
-<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/PokemonDetailList__Screen_Screenshot.png" width="250">
+### Detalle de Película/Serie
+*(Capturas en desarrollo)*
 
-## 📊 Pokémon Incluidos
+## 📊 Contenido Disponible
 
-La aplicación incluye **14 Pokémon** con datos completos:
+La aplicación incluirá una amplia selección de películas y series con información completa:
 
-1. Bulbasaur (Grass)
-2. Charmander (Fire)
-3. Squirtle (Water)
-4. Pikachu (Electric)
-5. Jigglypuff (Fairy)
-6. Meowth (Normal)
-7. Psyduck (Water)
-8. Golbat (Poison)
-9. Rattata (Normal)
-10. Spearow (Normal)
-11. Ekans (Poison)
-12. Vulpix (Fire)
-13. Geodude (Rock)
-14. Tentacruel (Water)
+### 🎬 Películas de Ejemplo
+- Películas de diversos géneros (Acción, Drama, Comedia, Ciencia Ficción, etc.)
+- Información completa: Director, reparto, duración, año, valoración y sinopsis
+
+### 📺 Series de Ejemplo
+- Series de múltiples géneros
+- Información detallada: Creador, reparto, temporadas, episodios, año, valoración y sinopsis
+
+**Nota**: El catálogo completo se actualizará cuando se integre la API externa.
 
 ## 📝 Características del Código
 
@@ -146,9 +162,24 @@ La aplicación incluye **14 Pokémon** con datos completos:
 - ✅ Código limpio y organizado
 - ✅ Comentarios en español
 - ✅ Separación clara de responsabilidades
-- ✅ Uso de funciones privadas para encapsulación (`private fun StatItem`)
+- ✅ Modelo de datos robusto con enum MediaType
 - ✅ Componentes reutilizables
-- ✅ Sistema de colores centralizado
+- ✅ Preparado para integración con API externa
+- ✅ Soporte para películas y series en una misma estructura
+- ✅ Data classes con propiedades opcionales para flexibilidad
+
+## 🔄 Estado del Proyecto
+
+### ✅ Completado
+- Modelo de datos (Media, MediaDetails, MediaType)
+- Documentación actualizada
+
+### 🚧 En Desarrollo
+- Repository con datos de ejemplo
+- ViewModel actualizado
+- Pantallas de lista y detalle adaptadas
+- Integración con API externa
+- Sistema de búsqueda y filtros
 
 ## 👨‍💻 Autores
 
@@ -163,4 +194,4 @@ Este proyecto es parte de un ejercicio académico para la asignatura M07 - Andro
 
 ---
 
-⭐ **¡Gotta Catch 'Em All!** ⭐
+🎬 **¡Disfruta del mejor contenido multimedia!** 📺
