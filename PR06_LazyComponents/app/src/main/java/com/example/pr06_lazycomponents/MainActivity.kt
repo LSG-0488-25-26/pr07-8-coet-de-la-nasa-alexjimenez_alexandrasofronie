@@ -14,12 +14,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pr06_lazycomponents.model.Pokemon
-import com.example.pr06_lazycomponents.model.PokemonStats
+import com.example.pr06_lazycomponents.model.Media
+import com.example.pr06_lazycomponents.model.MediaDetails
+import com.example.pr06_lazycomponents.model.MediaType
 import com.example.pr06_lazycomponents.ui.theme.PR06_LazyComponentsTheme
-import com.example.pr06_lazycomponents.view.PokemonDetailScreen
-import com.example.pr06_lazycomponents.view.PokemonListScreen
-import com.example.pr06_lazycomponents.viewmodel.PokemonViewModel
+import com.example.pr06_lazycomponents.view.MediaDetailScreen
+import com.example.pr06_lazycomponents.view.MediaListScreen
+import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
             PR06_LazyComponentsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navController = rememberNavController()
-                    val viewModel: PokemonViewModel = viewModel()
+                    val viewModel: MediaViewModel = viewModel()
 
                     NavHost(
                         navController = navController,
@@ -37,22 +38,22 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(Screen.ListScreen.route) {
-                            PokemonListScreen(
+                            MediaListScreen(
                                 viewModel = viewModel,
-                                onPokemonClick = { pokemon ->
-                                    viewModel.selectPokemon(pokemon)
+                                onMediaClick = { media ->
+                                    viewModel.selectMedia(media)
                                     navController.navigate(Screen.DetailScreen.route)
                                 }
                             )
                         }
 
                         composable(Screen.DetailScreen.route) {
-                            // Obtenemos el Pokémon del ViewModel
-                            val selectedPokemon = viewModel.selectedPokemon.value
+                            // Obtenemos la película/serie del ViewModel
+                            val selectedMedia = viewModel.selectedMedia.value
 
-                            if (selectedPokemon != null) {
-                                PokemonDetailScreen(
-                                    pokemon = selectedPokemon,
+                            if (selectedMedia != null) {
+                                MediaDetailScreen(
+                                    media = selectedMedia,
                                     onBackClick = { navController.navigateUp() }
                                 )
                             }
@@ -64,29 +65,37 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//Preview para PokemonListScreen
-@Preview(showBackground = true, name = "Pokemon List Screen")
+//Preview para MediaListScreen
+@Preview(showBackground = true, name = "Media List Screen")
 @Composable
-fun PokemonListScreenPreview() {
+fun MediaListScreenPreview() {
     PR06_LazyComponentsTheme {
-        PokemonListScreen(
+        MediaListScreen(
             viewModel = viewModel(),
-            onPokemonClick = { }
+            onMediaClick = { }
         )
     }
 }
 
-//Preview para PokemonDetailScreen
-@Preview(showBackground = true, name = "Pokemon Detail Screen")
+//Preview para MediaDetailScreen
+@Preview(showBackground = true, name = "Media Detail Screen")
 @Composable
-fun PokemonDetailScreenPreview() {
+fun MediaDetailScreenPreview() {
     PR06_LazyComponentsTheme {
-        PokemonDetailScreen(
-            pokemon = Pokemon(
-                name = "Pikachu",
-                type = "Electric",
-                image = R.drawable.pikachu,
-                stats = PokemonStats(35, 55, 40, 50, 50, 90)
+        MediaDetailScreen(
+            media = Media(
+                title = "Inception",
+                mediaType = MediaType.MOVIE,
+                genre = "Ciencia Ficción",
+                image = R.drawable.bulbasaur,
+                year = 2010,
+                rating = 8.8,
+                description = "Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños.",
+                details = MediaDetails(
+                    duration = "2h 28min",
+                    director = "Christopher Nolan",
+                    cast = listOf("Leonardo DiCaprio", "Joseph Gordon-Levitt")
+                )
             ),
             onBackClick = { }
         )
