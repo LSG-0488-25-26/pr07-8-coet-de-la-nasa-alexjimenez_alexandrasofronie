@@ -10,14 +10,15 @@ enum class MediaType {
 
 // Data class principal para películas y series
 data class Media(
+    val id: Int,                        // id para las peliculas o series
     val title: String,                  // itulo
     val mediaType: MediaType,           // Tipo Movie o Series
     val genre: String,                  // Acción, Drama, Comedia
-    @DrawableRes val image: Int,        // Imagen de la portada
+    val imageUrl: String,               // Imagen de la portada adaptada a la api
     val year: Int,                      // Año de lanzamiento
     val rating: Double,                 // Puntuación del 0 al 10
     val description: String,            // Sinopsis
-    val details: MediaDetails           // Detalles adicionales
+    val details: MediaDetails? = null   // Detalles adicionales (opcional)
 )
 
 // Detalles adicionales de cada película/serie
