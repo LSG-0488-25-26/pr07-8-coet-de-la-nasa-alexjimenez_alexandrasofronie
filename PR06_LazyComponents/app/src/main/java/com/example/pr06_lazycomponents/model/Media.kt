@@ -1,7 +1,5 @@
 package com.example.pr06_lazycomponents.model
 
-import androidx.annotation.DrawableRes
-
 // Enum para distinguir entre película y serie
 enum class MediaType {
     MOVIE,          // Peliculas
@@ -29,3 +27,64 @@ data class MediaDetails(
     val seasons: Int? = null,       // Solo para series
     val episodes: Int? = null       // Solo para series
 )
+
+//object para convertir IDs de géneros a nombres (tipos de genero de la pelicula o serie)
+object GenreMapper {
+    private val genreMap = mapOf(
+        28 to "Acción",
+        12 to "Aventura",
+        16 to "Animación",
+        35 to "Comedia",
+        80 to "Crimen",
+        99 to "Documental",
+        18 to "Drama",
+        10751 to "Familia",
+        14 to "Fantasía",
+        36 to "Historia",
+        27 to "Terror",
+        10402 to "Música",
+        9648 to "Misterio",
+        10749 to "Romance",
+        878 to "Ciencia Ficción",
+        10770 to "Película de TV",
+        53 to "Suspense",
+        10752 to "Bélica",
+        37 to "Western"
+    )
+    
+    fun convertGenreIds(genreIds: List<Int>): String {
+        return genreIds.mapNotNull { genreMap[it] }
+            .take(2)  // Máximo 2 géneros
+            .joinToString(", ")
+            .ifEmpty { "Sin género" }
+    }
+}
+
+//Funciones de extensión para convertir de TMDB a Media
+fun Result_Movies.toMedia(): Media {
+    return Media(
+        id = this.id,
+        title = this.title,
+        mediaType = MediaType.MOVIE,
+        genre = GenreMapper.convertGenreIds(this.genre_ids),
+        imageUrl = "https://image.tmdb.org/t/p/w500${this.poster_path}",
+        year = this.release_date.take(4).toIntOrNull() ?: 0,
+        rating = (this.vote_average * 10).toInt() / 10.0,   // Redondeamos a 1 decimal
+        description = this.overview,
+        details = null                                      // Indicamos null para que se cargue en la view details
+    )
+}
+
+fun Result_Series.toMedia(): Media {
+    return Media(
+        id = this.id,
+        title = this.name,                                      // Las series usan "name" en vez de "title"
+        mediaType = MediaType.SERIES,
+        genre = GenreMapper.convertGenreIds(this.genre_ids),
+        imageUrl = "https://image.tmdb.org/t/p/w500${this.poster_path}",
+        year = this.first_air_date.take(4).toIntOrNull() ?: 0,  // "first_air_date" en vez de "release_date"
+        rating = (this.vote_average * 10).toInt() / 10.0,
+        description = this.overview,
+        details = null
+    )
+}
