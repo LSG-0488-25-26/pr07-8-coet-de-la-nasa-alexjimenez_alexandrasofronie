@@ -61,4 +61,18 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+
+    // RETROFIT - Para conectar con la API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // CORRUTINES - Para llamadas asíncronas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // LIVEDATA - Para observar datos (si no lo tienes ya)
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.5")
+
+    // GLIDE - Para cargar imágenes desde URL
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 }
