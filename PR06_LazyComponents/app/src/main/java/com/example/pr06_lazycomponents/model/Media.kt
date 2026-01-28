@@ -61,7 +61,13 @@ object GenreMapper {
 }
 
 //Funciones de extensión para convertir de TMDB a Media
-fun Result_Movies.toMedia(): Media {
+fun Result_Movies.toMedia(details: MediaDetails?): Media {
+    val description = if (this.overview.isNullOrBlank()) {
+        "Sinopsis no disponible para esta película."
+    } else {
+        this.overview
+    }
+
     return Media(
         id = this.id,
         title = this.title,
@@ -70,12 +76,18 @@ fun Result_Movies.toMedia(): Media {
         imageUrl = "https://image.tmdb.org/t/p/w500${this.poster_path}",
         year = this.release_date.take(4).toIntOrNull() ?: 0,
         rating = (this.vote_average * 10).toInt() / 10.0,   // Redondeamos a 1 decimal
-        description = this.overview,
-        details = null                                      // Indicamos null para que se cargue en la view details
+        description = description,
+        details = details
     )
 }
 
-fun Result_Series.toMedia(): Media {
+fun Result_Series.toMedia(details: MediaDetails?): Media {
+    // Manejar sinopsis vacías
+    val description = if (this.overview.isNullOrBlank()) {
+        "Sinopsis no disponible para esta serie."
+    } else {
+        this.overview
+    }
     return Media(
         id = this.id,
         title = this.name,                                      // Las series usan "name" en vez de "title"
@@ -84,7 +96,7 @@ fun Result_Series.toMedia(): Media {
         imageUrl = "https://image.tmdb.org/t/p/w500${this.poster_path}",
         year = this.first_air_date.take(4).toIntOrNull() ?: 0,  // "first_air_date" en vez de "release_date"
         rating = (this.vote_average * 10).toInt() / 10.0,
-        description = this.overview,
-        details = null
+        description = description,
+        details = details
     )
 }
