@@ -150,6 +150,14 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
      - Duración (para películas) o episodios/temporadas (para series)
 6. **Volver**: Botón "Volver a la lista" para regresar
 
+## 🎨 Capturas de Pantalla
+
+### Lista de Películas y Series
+<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaList_Screen_Screenshot.png" width="250">
+
+### Detalle de Película/Serie
+<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaDetail_Screen_Screenshot.png" width="250">
+
 ## 🛠️ Instalación
 
 1. Clona el repositorio:
@@ -202,14 +210,6 @@ implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 // Glide Compose para carga de imágenes desde URLs
 implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 ```
-
-## 🎨 Capturas de Pantalla
-
-### Lista de Películas y Series
-<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaList_Screen_Screenshot.png" width="250">
-
-### Detalle de Película/Serie
-<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaDetail_Screen_Screenshot.png" width="250">
 
 ## 📊 Contenido Disponible
 
