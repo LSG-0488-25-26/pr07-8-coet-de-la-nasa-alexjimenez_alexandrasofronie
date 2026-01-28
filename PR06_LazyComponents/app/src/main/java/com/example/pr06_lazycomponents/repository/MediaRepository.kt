@@ -26,7 +26,10 @@ class MediaRepository {
             
             if (moviesResponse.isSuccessful) {      //Comprobamos si la petición de la APi fue correcta
                 moviesResponse.body()?.results?.let { movies ->
-                    mediaList.addAll(movies.map { it.toMedia() })
+                    movies.take(5).forEach { movie ->
+                        val details = getMovieDetails(movie.id)
+                        mediaList.add(movie.toMedia(details))
+                    }
                     /*
                     Convierte cada Result_Movies a Media usando
                     la función de extensión toMedia() creada en Media.kt
