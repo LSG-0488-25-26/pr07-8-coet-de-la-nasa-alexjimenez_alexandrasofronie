@@ -205,11 +205,11 @@ implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
 ## 🎨 Capturas de Pantalla
 
-### Lista de Contenido
-*(Capturas en desarrollo)*
+### Lista de Películas y Series
+<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaList_Screen_Screenshot.png" width="250">
 
 ### Detalle de Película/Serie
-*(Capturas en desarrollo)*
+<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaDetail_Screen_Screenshot.png" width="250">
 
 ## 📊 Contenido Disponible
 
