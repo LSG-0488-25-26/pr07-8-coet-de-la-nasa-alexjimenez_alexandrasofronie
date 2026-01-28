@@ -3,8 +3,10 @@ package com.example.pr06_lazycomponents.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pr06_lazycomponents.model.Media
 import com.example.pr06_lazycomponents.repository.MediaRepository
+import kotlinx.coroutines.launch
 
 class MediaViewModel : ViewModel() {
     private val repository = MediaRepository()
@@ -21,8 +23,15 @@ class MediaViewModel : ViewModel() {
         loadMedia()
     }
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     private fun loadMedia() {
-        _mediaList.value = repository.getMediaList()
+        viewModelScope.launch {
+            _isLoading.value = true
+            _mediaList.value = repository.getMediaList()
+            _isLoading.value = false
+        }
     }
 
     fun selectMedia(media: Media) {
