@@ -1,6 +1,6 @@
 package com.example.pr06_lazycomponents
 
-import android.os.Bundle
+import  android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -84,10 +84,11 @@ fun MediaDetailScreenPreview() {
     PR06_LazyComponentsTheme {
         MediaDetailScreen(
             media = Media(
+                id = 1,
                 title = "Inception",
                 mediaType = MediaType.MOVIE,
                 genre = "Ciencia Ficción",
-                image = R.drawable.bulbasaur,
+                imageUrl = "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
                 year = 2010,
                 rating = 8.8,
                 description = "Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños.",
