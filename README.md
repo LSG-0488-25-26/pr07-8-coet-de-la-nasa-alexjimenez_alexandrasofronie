@@ -152,7 +152,7 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 
 ## 🎨 Capturas de Pantalla
 
-### Lista de Películas y Series
+### Lista de Películas/Series
 <img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaList_Screen_Screenshot.png" width="250">
 
 ### Detalle de Película/Serie
