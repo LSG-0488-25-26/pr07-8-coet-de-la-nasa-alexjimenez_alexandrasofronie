@@ -19,13 +19,19 @@ class MediaViewModel : ViewModel() {
     private val _selectedMedia = MutableLiveData<Media>()
     val selectedMedia: LiveData<Media> get() = _selectedMedia
 
+    // Estado de carga añadido
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     init {
         loadMedia()
     }
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
-
+    /*
+    Carga la lista de películas y series desde la API usando corrutines.
+    Ejecuta la llamada en viewModelScope para que se cancele automáticamente
+    si el ViewModel deja de usarse.
+    */
     private fun loadMedia() {
         viewModelScope.launch {
             _isLoading.value = true
