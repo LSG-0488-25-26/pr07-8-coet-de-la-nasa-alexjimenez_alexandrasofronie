@@ -26,6 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.BorderStroke
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.pr06_lazycomponents.model.Media
 import com.example.pr06_lazycomponents.model.MediaType
 import com.example.pr06_lazycomponents.ui.theme.getGenreColor
@@ -52,10 +54,11 @@ fun MediaDetailScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = media.image),
+                    @OptIn(ExperimentalGlideComposeApi::class)
+                    GlideImage(
+                        model = media.imageUrl,
                         contentDescription = "Póster de ${media.title}",
-                        modifier = Modifier.size(180.dp)
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -72,7 +75,11 @@ fun MediaDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${if (media.mediaType == MediaType.MOVIE) "🎬 Película" else "📺 Serie"} • ${media.genre}",
+                text = if (media.mediaType == MediaType.MOVIE) {
+                    "🎬 Película • ${media.genre}"
+                } else {
+                    "📺 Serie • ${media.genre}"
+                },
                 fontSize = 18.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -129,7 +136,10 @@ fun MediaDetailScreen(
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
-                media.details?.let { details ->
+                if (media.details != null) {
+
+                    val details = media.details
+
                     DetailItem(label = "Duración", value = media.details.duration)
                     DetailItem(label = "Director", value = media.details.director)
 
@@ -164,7 +174,7 @@ fun MediaDetailScreen(
                             DetailItem(label = "Episodios Totales", value = episodes.toString())
                         }
                     }
-                }?: run {
+                } else {
                     Text(
                         text = "Detalles no disponibles",
                         style = MaterialTheme.typography.bodyMedium,
