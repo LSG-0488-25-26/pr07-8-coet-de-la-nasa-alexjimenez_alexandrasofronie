@@ -1,4 +1,4 @@
-    package com.example.pr06_lazycomponents.view
+package com.example.pr06_lazycomponents.view
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,9 +25,9 @@ fun MediaListScreen(
 ) {
     val mediaList = viewModel.mediaList.observeAsState(initial = emptyList())
     val isLoading = viewModel.isLoading.observeAsState(initial = false)
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Text(
             text = "🎬 Películas & Series",
             style = MaterialTheme.typography.headlineLarge,
@@ -45,22 +45,24 @@ fun MediaListScreen(
                         .fillMaxSize()
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
                     CircularProgressIndicator()
                 }
             }
+
             mediaList.value.isEmpty() -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
                     Text(
                         text = "No hay contenido disponible"
                     )
                 }
             }
+
             else -> {
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -75,6 +77,7 @@ fun MediaListScreen(
                         )
                     }
                 }
+            }
         }
     }
 }

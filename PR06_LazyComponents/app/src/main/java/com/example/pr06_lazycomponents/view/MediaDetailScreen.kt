@@ -1,4 +1,4 @@
-package com.example.pr06_lazycomponents.view
+    package com.example.pr06_lazycomponents.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -129,42 +129,50 @@ fun MediaDetailScreen(
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
-                DetailItem(label = "Duración", value = media.details.duration)
-                DetailItem(label = "Director", value = media.details.director)
+                media.details?.let { details ->
+                    DetailItem(label = "Duración", value = media.details.duration)
+                    DetailItem(label = "Director", value = media.details.director)
 
-                // Elenco
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
+                    // Elenco
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text(
-                            text = "Elenco Principal",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        media.details.cast.forEach { actor ->
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
                             Text(
-                                text = "• $actor",
-                                style = MaterialTheme.typography.bodyMedium
+                                text = "Elenco Principal",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
                             )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            details.cast.forEach { actor ->
+                                Text(
+                                    text = "• $actor",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
                     }
-                }
-
-                // Temporadas y episodios (solo para series)
-                if (media.mediaType == MediaType.SERIES) {
-                    media.details.seasons?.let { seasons ->
-                        DetailItem(label = "Temporadas", value = seasons.toString())
+                    // Temporadas y episodios (solo para series)
+                    if (media.mediaType == MediaType.SERIES) {
+                        details.seasons?.let { seasons ->
+                            DetailItem(label = "Temporadas", value = seasons.toString())
+                        }
+                        details.episodes?.let { episodes ->
+                            DetailItem(label = "Episodios Totales", value = episodes.toString())
+                        }
                     }
-                    media.details.episodes?.let { episodes ->
-                        DetailItem(label = "Episodios Totales", value = episodes.toString())
-                    }
+                }?: run {
+                    Text(
+                        text = "Detalles no disponibles",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
-            }
+                }
 
             Spacer(modifier = Modifier.height(13.dp))
         }
