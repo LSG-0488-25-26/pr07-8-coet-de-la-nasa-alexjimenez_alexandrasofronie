@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.pr06_lazycomponents.model.Media
 import com.example.pr06_lazycomponents.model.MediaType
 import com.example.pr06_lazycomponents.ui.theme.getGenreColor
@@ -42,8 +44,9 @@ fun MediaItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = media.image),
+            @OptIn(ExperimentalGlideComposeApi::class)
+            GlideImage(
+                model = media.imageUrl,
                 contentDescription = "Imagen de ${media.title}",
                 modifier = Modifier.size(80.dp)
             )
@@ -57,7 +60,11 @@ fun MediaItem(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "${if (media.mediaType == MediaType.MOVIE) "🎬 Película" else "📺 Serie"} • ${media.genre}",
+                    text = if (media.mediaType == MediaType.MOVIE) {
+                        "🎬 Película • ${media.genre}"
+                    } else {
+                        "📺 Serie • ${media.genre}"
+                    },
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
