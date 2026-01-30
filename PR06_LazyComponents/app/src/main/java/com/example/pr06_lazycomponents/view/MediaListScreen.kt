@@ -24,6 +24,7 @@ fun MediaListScreen(
 ) {
     val mediaList = viewModel.mediaList.observeAsState(initial = emptyList())
     val isLoading = viewModel.isLoading.observeAsState(initial = false)
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 class MediaViewModel : ViewModel() {
     private val repository = MediaRepository()
 
+    private val _allMediaList = MutableLiveData<List<Media>>(emptyList())
+
     // Para guardar la lista de películas/series
     private val _mediaList = MutableLiveData<List<Media>>()
     val mediaList: LiveData<List<Media>> get() = _mediaList
@@ -22,6 +24,10 @@ class MediaViewModel : ViewModel() {
     // Estado de carga añadido
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
+
+    // Estado de búsqueda
+    private val _isSearching = MutableLiveData(false)
+    val isSearching: LiveData<Boolean> get() = _isSearching
 
     init {
         loadMedia()
@@ -35,9 +41,35 @@ class MediaViewModel : ViewModel() {
     private fun loadMedia() {
         viewModelScope.launch {
             _isLoading.value = true
-            _mediaList.value = repository.getMediaList()
+            val media = repository.getMediaList()
+            _allMediaList.value = media
+            _mediaList.value = media
             _isLoading.value = false
         }
+    }
+
+    // Función para buscar en la lista
+    fun searchMedia(query: String) {
+        _isSearching.value = true
+
+        val allMedia = _allMediaList.value ?: emptyList()
+
+        if (query.isEmpty()) {
+            _mediaList.value = allMedia
+            _isSearching.value = false
+            return
+        }
+
+        val lowerCaseQuery = query.lowercase()
+        val filteredList = allMedia.filter { media ->
+            media.title.lowercase().contains(lowerCaseQuery) ||
+                    media.genre.lowercase().contains(lowerCaseQuery) ||
+                    media.description.lowercase().contains(lowerCaseQuery) ||
+                    media.year.toString().contains(lowerCaseQuery)
+        }
+
+        _mediaList.value = filteredList
+        _isSearching.value = false
     }
 
     fun selectMedia(media: Media) {
