@@ -14,7 +14,11 @@ import com.example.pr06_lazycomponents.view.components.SearchBarView
 import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
 
 @Composable
-fun SearchScreen(myViewModel: SearchBarViewModel, paddingValues: PaddingValues) {
+fun SearchScreen(
+    myViewModel: SearchBarViewModel,
+    paddingValues: PaddingValues,
+    onSearch: (String) -> Unit = {}
+) {
     val searchHistory by myViewModel.searchHistory.observeAsState(emptyList())
 
     Column(
@@ -22,7 +26,10 @@ fun SearchScreen(myViewModel: SearchBarViewModel, paddingValues: PaddingValues) 
             .fillMaxWidth()
             .padding(paddingValues)
     ) {
-        SearchBarView(myViewModel)
+        SearchBarView(
+            myViewModel = myViewModel,
+            onSearch = onSearch
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

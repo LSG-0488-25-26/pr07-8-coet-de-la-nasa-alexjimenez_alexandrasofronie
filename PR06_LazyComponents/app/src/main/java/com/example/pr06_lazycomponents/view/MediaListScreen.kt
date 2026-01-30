@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.MediaItem
+import com.example.pr06_lazycomponents.view.components.SearchBarView
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
 
@@ -44,9 +45,11 @@ fun MediaListScreen(
                 .padding(16.dp)
         )
 
-        SearchScreen(
+        SearchBarView(
             myViewModel = searchBarViewModel,
-            paddingValues = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+            onSearch = { query ->
+                viewModel.searchMedia(query)
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

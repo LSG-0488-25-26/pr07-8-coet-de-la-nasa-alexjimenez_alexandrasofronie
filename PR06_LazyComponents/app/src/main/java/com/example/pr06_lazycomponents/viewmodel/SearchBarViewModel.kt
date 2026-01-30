@@ -13,6 +13,9 @@ class SearchBarViewModel : ViewModel() {
     private val _searchHistory = MutableLiveData<List<String>>(emptyList())
     val searchHistory: LiveData<List<String>> = _searchHistory
 
+    //Callback para cuando se realiza una búsqueda
+    var onSearch: ((String) -> Unit)? = null
+
     fun onSearchTextChange(text: String) {
         _searchedText.value = text
     }
@@ -24,10 +27,17 @@ class SearchBarViewModel : ViewModel() {
             val newHistory = listOf(text) + currentHistory.take(9)
             _searchHistory.value = newHistory
             _searchedText.value = ""
+
+            // Ejecutar callback
+            onSearch?.invoke(text)
         }
     }
 
     fun clearHistory() {
         _searchHistory.value = emptyList()
+    }
+
+    fun clearSearchText() {
+        _searchedText.value = ""
     }
 }
