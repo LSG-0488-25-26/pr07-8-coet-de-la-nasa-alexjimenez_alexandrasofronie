@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SearchViewModel : ViewModel() {
+class SearchBarViewModel : ViewModel() {
     //Texto en la search bar
     private val _searchedText = MutableLiveData("")
     val searchedText: LiveData<String> = _searchedText
@@ -12,10 +12,6 @@ class SearchViewModel : ViewModel() {
     //Historial
     private val _searchHistory = MutableLiveData<List<String>>(emptyList())
     val searchHistory: LiveData<List<String>> = _searchHistory
-
-    //Estado de búsqueda activa
-    private val _isSearchActive = MutableLiveData(false)
-    val isSearchActive: LiveData<Boolean> = _isSearchActive
 
     fun onSearchTextChange(text: String) {
         _searchedText.value = text
@@ -33,13 +29,5 @@ class SearchViewModel : ViewModel() {
 
     fun clearHistory() {
         _searchHistory.value = emptyList()
-    }
-
-    fun setSearchActive(active: Boolean) {
-        _isSearchActive.value = active
-    }
-
-    fun clearSearchText() {
-        _searchedText.value = ""
     }
 }
