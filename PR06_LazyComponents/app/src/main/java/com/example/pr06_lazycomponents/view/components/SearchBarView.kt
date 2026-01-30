@@ -42,17 +42,22 @@ fun SearchBarView(
     val searchedText by myViewModel.searchedText.observeAsState("")
     val searchHistory by myViewModel.searchHistory.observeAsState(emptyList())
 
+    //Estado para controlar si la SearchBar está activa o no
     var active by remember { mutableStateOf(false) }
-
-    // Configurar el callback en el ViewModel
-    LaunchedEffect(myViewModel) {
-        myViewModel.onSearch = onSearch
-    }
 
     SearchBar(
         query = searchedText,
         onQueryChange = { myViewModel.onSearchTextChange(it) },
-        onSearch = { myViewModel.addToHistory(it) },
+        onSearch = { query ->
+            if (query.isNotEmpty()) {
+                myViewModel.addToHistory(query)
+                onSearch(query)
+            } else {
+                onSearch("")
+            }
+            active = false
+            myViewModel.onSearchTextChange("")
+        },
         active = active,
         onActiveChange = { active = it },
         leadingIcon = {
@@ -70,6 +75,7 @@ fun SearchBarView(
                     modifier = Modifier.clickable {
                         myViewModel.onSearchTextChange("")
                         onSearch("")
+                        active = false
                     }
                 )
             } else if (searchHistory.isNotEmpty() && active) {
@@ -108,6 +114,7 @@ fun SearchBarView(
                             .padding(vertical = 4.dp, horizontal = 8.dp)
                             .clickable {
                                 myViewModel.onSearchTextChange(search)
+                                myViewModel.addToHistory(search)
                                 onSearch(search)
                                 active = false
                             },
@@ -135,7 +142,7 @@ fun SearchBarView(
                     }
                 }
             }
-        } else if (active) {
+        } else if (active && searchHistory.isEmpty()) {
             // Mensaje cuando no hay historial
             Box(
                 modifier = Modifier

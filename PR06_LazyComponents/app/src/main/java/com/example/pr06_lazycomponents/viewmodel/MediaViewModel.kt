@@ -29,6 +29,10 @@ class MediaViewModel : ViewModel() {
     private val _isSearching = MutableLiveData(false)
     val isSearching: LiveData<Boolean> get() = _isSearching
 
+    private val _currentSearchQuery = MutableLiveData<String>("")
+    val currentSearchQuery: LiveData<String> get() = _currentSearchQuery
+
+
     init {
         loadMedia()
     }
@@ -50,6 +54,7 @@ class MediaViewModel : ViewModel() {
 
     // Función para buscar en la lista
     fun searchMedia(query: String) {
+        _currentSearchQuery.value = query
         _isSearching.value = true
 
         val allMedia = _allMediaList.value ?: emptyList()
@@ -63,9 +68,9 @@ class MediaViewModel : ViewModel() {
         val lowerCaseQuery = query.lowercase()
         val filteredList = allMedia.filter { media ->
             media.title.lowercase().contains(lowerCaseQuery) ||
-                    media.genre.lowercase().contains(lowerCaseQuery) ||
-                    media.description.lowercase().contains(lowerCaseQuery) ||
-                    media.year.toString().contains(lowerCaseQuery)
+            media.genre.lowercase().contains(lowerCaseQuery) ||
+            media.description.lowercase().contains(lowerCaseQuery) ||
+            media.year.toString().contains(lowerCaseQuery)
         }
 
         _mediaList.value = filteredList

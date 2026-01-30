@@ -29,6 +29,7 @@ fun MediaListScreen(
     val mediaList by viewModel.mediaList.observeAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.observeAsState(initial = false)
     val isSearching by viewModel.isSearching.observeAsState(initial = false)
+    val currentSearchQuery by viewModel.currentSearchQuery.observeAsState(initial = "")
 
     val searchBarViewModel: SearchBarViewModel = viewModel()
 
@@ -36,7 +37,11 @@ fun MediaListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = "🎬 Películas & Series",
+            text = if (currentSearchQuery.isNotEmpty()) {
+                "🔍 Resultados para: \"$currentSearchQuery\""
+            } else {
+                "🎬 Películas & Series"
+            },
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -61,7 +66,17 @@ fun MediaListScreen(
                     .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Buscando...",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             }
         } else {
             when {
@@ -84,17 +99,43 @@ fun MediaListScreen(
                             .padding(16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = if (isSearching) {
-                                "No se encontraron resultados"
-                            } else {
-                                "No hay contenido disponible"
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = if (currentSearchQuery.isNotEmpty()) {
+                                    "No se encontraron resultados para \"$currentSearchQuery\""
+                                } else {
+                                    "No hay contenido disponible"
+                                },
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            if (currentSearchQuery.isNotEmpty()) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "Intenta con otras palabras o limpia la búsqueda",
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
-                        )
+                        }
                     }
                 }
 
                 else -> {
+                    if (currentSearchQuery.isNotEmpty()) {
+                        Text(
+                            text = "Encontrados: ${mediaList.size} resultado${if (mediaList.size != 1) "s" else ""}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp, vertical = 8.dp)
+                        )
+                    }
+
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
