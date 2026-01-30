@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -67,10 +68,10 @@ fun SearchBarView(
             )
         },
         trailingIcon = {
-            if (searchHistory.isNotEmpty()) {
+            if (searchedText.isNotEmpty()) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
-                    contentDescription = "Clear",
+                    contentDescription = "Clear search text",
                     tint = Color.Red,
                     modifier = Modifier.clickable {
                         myViewModel.onSearchTextChange("")
@@ -80,12 +81,14 @@ fun SearchBarView(
                 )
             } else if (searchHistory.isNotEmpty() && active) {
                 Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = "Clear History",
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Clear all search history",
                     tint = Color.Gray,
-                    modifier = Modifier.clickable {
-                        myViewModel.clearHistory()
-                    }
+                    modifier = Modifier
+                        .clickable {
+                            myViewModel.clearHistory()
+                        }
+                        .padding(4.dp)
                 )
             }
         },
