@@ -15,8 +15,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.MediaItem
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
+import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
 
 @Composable
 fun MediaListScreen(
@@ -26,6 +28,8 @@ fun MediaListScreen(
     val mediaList by viewModel.mediaList.observeAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.observeAsState(initial = false)
     val isSearching by viewModel.isSearching.observeAsState(initial = false)
+
+    val searchBarViewModel: SearchBarViewModel = viewModel()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -38,6 +42,11 @@ fun MediaListScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+        )
+
+        SearchScreen(
+            myViewModel = searchBarViewModel,
+            paddingValues = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
