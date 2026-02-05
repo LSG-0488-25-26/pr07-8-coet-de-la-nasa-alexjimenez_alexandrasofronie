@@ -13,13 +13,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.MediaItem
 import com.example.pr06_lazycomponents.view.components.SearchBarView
+import com.example.pr06_lazycomponents.view.components.MyTopAppBar
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun MediaListScreen(
@@ -33,31 +36,37 @@ fun MediaListScreen(
 
     val searchBarViewModel: SearchBarViewModel = viewModel()
 
+    //Estado para mostrar/ocultar la SearchBar
+    var isSearchBarVisible by remember {
+        mutableStateOf(false)
+    }
+    
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(
-            text = if (currentSearchQuery.isNotEmpty()) {
+        //Usamos el component MyTopAppBar
+        MyTopAppBar(
+            title = if (currentSearchQuery.isNotEmpty()) {
                 "🔍 Resultados para: \"$currentSearchQuery\""
             } else {
                 "🎬 Películas & Series"
             },
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-
-        SearchBarView(
-            myViewModel = searchBarViewModel,
-            onSearch = { query ->
-                viewModel.searchMedia(query)
+            onSearchClick = {
+                isSearchBarVisible = !isSearchBarVisible
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))  // Espacio después del TopAppBar
+
+        if (isSearchBarVisible) {
+            SearchBarView(
+                myViewModel = searchBarViewModel,
+                onSearch = { query ->
+                    viewModel.searchMedia(query)
+                }
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+        }
 
         if (isSearching) {
             Box(
