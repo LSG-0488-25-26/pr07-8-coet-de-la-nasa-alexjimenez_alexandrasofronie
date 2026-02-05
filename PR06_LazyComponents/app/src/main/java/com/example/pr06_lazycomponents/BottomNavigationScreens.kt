@@ -11,13 +11,13 @@ sealed class BottomNavigationScreens(
     val label: String
 ) {
     object Home : BottomNavigationScreens(
-        Screen.ListScreen.route, 
+        Screen.ListScreen.route,            //La ruta va a MediaListScreen
         Icons.Filled.Home, 
         "Inicio"
     )
     
     object Favorite : BottomNavigationScreens(
-        Screen.FavoriteScreen.route, 
+        Screen.FavoriteScreen.route,       //La ruta va a FavoritesScreen  
         Icons.Filled.Favorite, 
         "Favoritos"
     )
