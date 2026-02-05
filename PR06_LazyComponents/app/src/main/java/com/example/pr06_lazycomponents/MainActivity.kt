@@ -20,7 +20,9 @@ import com.example.pr06_lazycomponents.model.MediaType
 import com.example.pr06_lazycomponents.ui.theme.PR06_LazyComponentsTheme
 import com.example.pr06_lazycomponents.view.MediaDetailScreen
 import com.example.pr06_lazycomponents.view.MediaListScreen
+import com.example.pr06_lazycomponents.view.components.MyBottomBar
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
+import com.example.pr06_lazycomponents.view.FavoriteScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +30,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PR06_LazyComponentsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val navController = rememberNavController()
-                    val viewModel: MediaViewModel = viewModel()
-
+                val navController = rememberNavController()
+                val viewModel: MediaViewModel = viewModel()
+                
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { MyBottomBar(navController) }      //BottomBar 
+                ) { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = Screen.ListScreen.route,
@@ -57,6 +62,10 @@ class MainActivity : ComponentActivity() {
                                     onBackClick = { navController.navigateUp() }
                                 )
                             }
+                        }
+
+                        composable(Screen.FavoriteScreen.route) {
+                            FavoriteScreen()
                         }
                     }
                 }
