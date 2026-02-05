@@ -7,7 +7,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -25,9 +24,7 @@ fun MyBottomBar(navController: NavHostController) {
     NavigationBar(
         containerColor = Color.LightGray,
         contentColor = Color.Black,
-        //alignement = Alignment.Center,
-        modifier = Modifier.height(110.dp)
-
+        modifier = Modifier.height(100.dp)
     ) {
         val navBackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
