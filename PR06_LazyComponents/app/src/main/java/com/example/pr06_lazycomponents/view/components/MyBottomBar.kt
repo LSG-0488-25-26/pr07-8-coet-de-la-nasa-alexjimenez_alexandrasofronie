@@ -1,0 +1,49 @@
+package com.example.pr06_lazycomponents.view.components
+
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.pr06_lazycomponents.BottomNavigationScreens
+
+@Composable
+fun MyBottomBar(navController: NavHostController) {
+    val bottomNavigationItems = listOf(
+        BottomNavigationScreens.Home,
+        BottomNavigationScreens.Favorite
+    )
+
+    NavigationBar(
+        containerColor = Color.LightGray,
+        contentColor = Color.Black,
+        //alignement = Alignment.Center,
+        modifier = Modifier.height(110.dp)
+
+    ) {
+        val navBackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackEntry?.destination?.route
+
+        bottomNavigationItems.forEach { item ->
+            NavigationBarItem(
+                icon = { Icon(item.icon, contentDescription = item.label) },
+                label = { Text(item.label) },
+                selected = currentRoute == item.route,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route)      //Navega a la pantalla Home (MediaListScreen)
+
+                    }
+                }
+            )
+        }
+    }
+}
