@@ -78,4 +78,7 @@ dependencies {
 
     // GLIDE - Para cargar imágenes desde URL
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
+    // MATERIAL COMPONENTS - Para NavigationBar del BottomBar
+    implementation("androidx.compose.material:material:1.6.1")
 }
