@@ -3,6 +3,7 @@ package com.example.pr06_lazycomponents.view.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,118 +47,124 @@ fun SearchBarView(
     //Estado para controlar si la SearchBar está activa o no
     var active by remember { mutableStateOf(false) }
 
-    SearchBar(
-        query = searchedText,
-        onQueryChange = { myViewModel.onSearchTextChange(it) },
-        onSearch = { query ->
-            if (query.isNotEmpty()) {
-                myViewModel.addToHistory(query)
-                onSearch(query)
-            } else {
-                onSearch("")
-            }
-            active = false
-            myViewModel.onSearchTextChange("")
-        },
-        active = active,
-        onActiveChange = { active = it },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search"
-            )
-        },
-        trailingIcon = {
-            if (searchedText.isNotEmpty()) {
-                Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = "Clear search text",
-                    tint = Color.Red,
-                    modifier = Modifier.clickable {
-                        myViewModel.onSearchTextChange("")
-                        onSearch("")
-                        active = false
-                    }
-                )
-            } else if (searchHistory.isNotEmpty() && active) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = "Clear all search history",
-                    tint = Color.Gray,
-                    modifier = Modifier
-                        .clickable {
-                            myViewModel.clearHistory()
-                        }
-                        .padding(4.dp)
-                )
-            }
-        },
-        placeholder = { Text("Buscar...") },
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .padding(horizontal = 8.dp, vertical = 2.dp)
     ) {
-        if (searchHistory.isNotEmpty()) {
-            Text(
-                text = "Historial de búsquedas",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 200.dp)
-            ) {
-                items(searchHistory) { search ->
-                    Card(
+        SearchBar(
+            query = searchedText,
+            onQueryChange = { myViewModel.onSearchTextChange(it) },
+            onSearch = { query ->
+                if (query.isNotEmpty()) {
+                    myViewModel.addToHistory(query)
+                    onSearch(query)
+                } else {
+                    onSearch("")
+                }
+                active = false
+                myViewModel.onSearchTextChange("")
+            },
+            active = active,
+            onActiveChange = { active = it },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search"
+                )
+            },
+            trailingIcon = {
+                if (searchedText.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = "Clear search text",
+                        tint = Color.Red,
+                        modifier = Modifier.clickable {
+                            myViewModel.onSearchTextChange("")
+                            onSearch("")
+                            active = false
+                        }
+                    )
+                } else if (searchHistory.isNotEmpty() && active) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Clear all search history",
+                        tint = Color.Gray,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp, horizontal = 8.dp)
                             .clickable {
-                                myViewModel.onSearchTextChange(search)
-                                myViewModel.addToHistory(search)
-                                onSearch(search)
-                                active = false
-                            },
-                        shape = RoundedCornerShape(8.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                    ) {
-                        Row(
+                                myViewModel.clearHistory()
+                            }
+                            .padding(4.dp)
+                    )
+                }
+            },
+            placeholder = { Text("Buscar...") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(16.dp))
+        ) {
+            if (searchHistory.isNotEmpty()) {
+                Text(
+                    text = "Historial de búsquedas",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 150.dp)
+                ) {
+                    items(searchHistory) { search ->
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                                .clickable {
+                                    myViewModel.onSearchTextChange(search)
+                                    myViewModel.addToHistory(search)
+                                    onSearch(search)
+                                    active = false
+                                },
+                            shape = RoundedCornerShape(8.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.History,
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = search,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.History,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = search,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
                     }
                 }
-            }
-        } else if (active && searchHistory.isEmpty()) {
-            // Mensaje cuando no hay historial
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "No hay búsquedas recientes",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            } else if (active && searchHistory.isEmpty()) {
+                // Mensaje cuando no hay historial
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No hay búsquedas recientes",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }

@@ -32,6 +32,8 @@ class MediaViewModel : ViewModel() {
     private val _currentSearchQuery = MutableLiveData<String>("")
     val currentSearchQuery: LiveData<String> get() = _currentSearchQuery
 
+    private val _isSearchBarVisible = MutableLiveData(false)
+    val isSearchBarVisible: LiveData<Boolean> get() = _isSearchBarVisible
 
     init {
         loadMedia()
@@ -79,5 +81,14 @@ class MediaViewModel : ViewModel() {
 
     fun selectMedia(media: Media) {
         _selectedMedia.value = media
+    }
+
+    // Funciones para controlar la visibilidad de la SearchBar
+    fun toggleSearchBarVisibility() {
+        _isSearchBarVisible.value = !(_isSearchBarVisible.value ?: false)
+    }
+
+    fun setSearchBarVisibility(visible: Boolean) {
+        _isSearchBarVisible.value = visible
     }
 }

@@ -1,9 +1,11 @@
 package com.example.pr06_lazycomponents.view.components
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,8 +25,7 @@ fun MyBottomBar(navController: NavHostController) {
 
     NavigationBar(
         containerColor = Color.LightGray,
-        contentColor = Color.Black,
-        modifier = Modifier.height(100.dp)
+        contentColor = Color.Black
     ) {
         val navBackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
@@ -37,9 +38,16 @@ fun MyBottomBar(navController: NavHostController) {
                 onClick = {
                     if (currentRoute != item.route) {
                         navController.navigate(item.route)      //Navega a la pantalla Home (MediaListScreen)
-
                     }
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color.Black,
+                    selectedTextColor = Color.Black,
+                    unselectedIconColor = Color.DarkGray,
+                    unselectedTextColor = Color.DarkGray,
+                    indicatorColor = Color.LightGray
+                ),
+                modifier = Modifier.padding(horizontal = 4.dp)
             )
         }
     }

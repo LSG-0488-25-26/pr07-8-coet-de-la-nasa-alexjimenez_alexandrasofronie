@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 @Composable
 fun MediaListScreen(
     onMediaClick: (Media) -> Unit,
+    isSearchBarVisible: Boolean = false,
     viewModel: MediaViewModel
 ) {
     val mediaList by viewModel.mediaList.observeAsState(initial = emptyList())
@@ -35,37 +36,20 @@ fun MediaListScreen(
     val currentSearchQuery by viewModel.currentSearchQuery.observeAsState(initial = "")
 
     val searchBarViewModel: SearchBarViewModel = viewModel()
-
-    //Estado para mostrar/ocultar la SearchBar
-    var isSearchBarVisible by remember {
-        mutableStateOf(false)
-    }
     
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        //Usamos el component MyTopAppBar
-        MyTopAppBar(
-            title = if (currentSearchQuery.isNotEmpty()) {
-                "🔍 Resultados para: \"$currentSearchQuery\""
-            } else {
-                "🎬 Películas & Series"
-            },
-            onSearchClick = {
-                isSearchBarVisible = !isSearchBarVisible
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))  // Espacio después del TopAppBar
-
         if (isSearchBarVisible) {
             SearchBarView(
                 myViewModel = searchBarViewModel,
                 onSearch = { query ->
                     viewModel.searchMedia(query)
+                    if (query.isNotEmpty() && mediaList.isNotEmpty()) {
+                        viewModel.setSearchBarVisibility(false)
+                    }
                 }
             )
-            Spacer(modifier = Modifier.height(4.dp))
         }
 
         if (isSearching) {
@@ -151,7 +135,10 @@ fun MediaListScreen(
                             .weight(1f)
                             .padding(horizontal = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(11.dp),
-                        contentPadding = PaddingValues(bottom = 20.dp)
+                        contentPadding = PaddingValues(
+                            top = 7.dp,
+                            bottom = 60.dp
+                        )
 
                     ) {
                         items(mediaList) { media ->

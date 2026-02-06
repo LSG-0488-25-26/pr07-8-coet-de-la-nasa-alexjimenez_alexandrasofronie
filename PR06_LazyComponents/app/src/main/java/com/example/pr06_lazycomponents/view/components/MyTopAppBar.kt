@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,31 +23,43 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MyTopAppBar(
     title: String,
-    onSearchClick: () -> Unit
+    showBackIcon: Boolean = false,
+    showSearchIcon: Boolean = false,
+    onBackClick: () -> Unit = {},
+    onSearchClick: () -> Unit = {}
 ) {
     TopAppBar(
-        title = { 
+        title = {
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center, 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-            ) 
+                fontWeight = FontWeight.Bold
+            )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.LightGray,
             titleContentColor = Color.Black,
+            navigationIconContentColor = Color.Black,
             actionIconContentColor = Color.Black
         ),
+        navigationIcon = {
+            if (showBackIcon) {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Enrere"
+                    )
+                }
+            }
+        },
         actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Filled.Search, 
-                    contentDescription = "Buscar"
-                )
+            if (showSearchIcon) {
+                IconButton(onClick = onSearchClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Buscar"
+                    )
+                }
             }
         }
     )
