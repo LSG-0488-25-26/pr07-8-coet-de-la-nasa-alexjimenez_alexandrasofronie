@@ -25,7 +25,8 @@ fun MyBottomBar(navController: NavHostController) {
 
     NavigationBar(
         containerColor = Color.LightGray,
-        contentColor = Color.Black
+        contentColor = Color.Black,
+        modifier = Modifier.height(110.dp)
     ) {
         val navBackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
@@ -46,8 +47,7 @@ fun MyBottomBar(navController: NavHostController) {
                     unselectedIconColor = Color.DarkGray,
                     unselectedTextColor = Color.DarkGray,
                     indicatorColor = Color.LightGray
-                ),
-                modifier = Modifier.padding(horizontal = 4.dp)
+                )
             )
         }
     }
