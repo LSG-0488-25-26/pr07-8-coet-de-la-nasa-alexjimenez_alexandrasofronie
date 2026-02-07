@@ -19,14 +19,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.MediaItem
 import com.example.pr06_lazycomponents.view.components.SearchBarView
-import com.example.pr06_lazycomponents.view.components.MyTopAppBar
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
-import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun MediaListScreen(
@@ -129,6 +126,7 @@ fun MediaListScreen(
                             Text(
                                 text = "Intenta con otras palabras o limpia la búsqueda",
                                 textAlign = TextAlign.Center,
+                                fontSize = 16.sp,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -142,15 +140,22 @@ fun MediaListScreen(
                     Text(
                         text = "Encontrados: ${mediaList.size} resultado${if (mediaList.size != 1) "s" else ""}",
                         style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp, vertical = 8.dp)
                     )
                 } else if (mediaList.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(10.dp))  // Spacer entre la toppbar y el texto
                     Text(
                         text = "Desplázate para cargar más contenido",
                         style = MaterialTheme.typography.bodySmall,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -192,6 +197,8 @@ fun MediaListScreen(
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text(
                                         text = "Cargando más contenido...",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -210,6 +217,8 @@ fun MediaListScreen(
                             ) {
                                 Text(
                                     text = "¡Has llegado al final!",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
