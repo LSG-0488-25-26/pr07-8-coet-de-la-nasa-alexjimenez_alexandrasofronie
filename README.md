@@ -158,6 +158,9 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 ### Detalle de Película/Serie
 <img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaDetail_Screen_Screenshot.png" width="250">
 
+### Detalle de Favoritos
+<img src="PR06_LazyComponents/app/src/main/java/com/example/pr06_lazycomponents/screenshot/MediaFavorite_Screen_Screenshot.png" width="250">
+
 ## 🛠️ Instalación
 
 1. Clona el repositorio:
