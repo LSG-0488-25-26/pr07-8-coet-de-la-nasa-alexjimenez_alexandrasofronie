@@ -15,7 +15,9 @@ MediaApp es una aplicación Android que muestra una lista interactiva de pelícu
 - 📊 **Información detallada**: Género, año, puntuación y sinopsis de cada contenido
 - ⭐ **Sistema de valoración**: Puntuación del 0 al 10 desde TMDB
 - 🎯 **Vista detalle**: Pantalla completa con información ampliada de cada película/serie
-- 🧭 **Navegación fluida**: Sistema de navegación entre lista y detalle
+- ❤️ **Sistema de favoritos**: Gestión de contenido favorito del usuario
+- 🔍 **Búsqueda dinámica**: TopAppBar con funcionalidad de búsqueda que se muestra/oculta
+- 🧭 **Navegación fluida**: BottomBar para navegación entre secciones y sistema de rutas
 - 🎨 **Interfaz moderna**: Desarrollada con Jetpack Compose y Material Design 3
 - ⚡ **Operaciones asíncronas**: Uso de Kotlin Coroutines para llamadas a la API
 - 🔄 **Estado de carga**: Indicador visual mientras se obtienen los datos
@@ -26,28 +28,35 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 
 ```
 ├── model/
-│   ├── Media.kt                # Data classes (Media, MediaDetails, MediaType, GenreMapper)
-│   ├── Result_Movies.kt        # Modelo de respuesta de películas de TMDB
-│   ├── Result_Series.kt        # Modelo de respuesta de series de TMDB
-│   ├── TMDB_Response_Movies.kt # Wrapper de respuesta de películas
-│   └── TMD_Response_Series.kt  # Wrapper de respuesta de series
+│   ├── Media.kt                    # Data classes (Media, MediaDetails, MediaType, GenreMapper)
+│   ├── Result_Movies.kt            # Modelo de respuesta de películas de TMDB
+│   ├── Result_Series.kt            # Modelo de respuesta de series de TMDB
+│   ├── TMDB_Response_Movies.kt     # Wrapper de respuesta de películas
+│   └── TMD_Response_Series.kt      # Wrapper de respuesta de series
+├── nav/
+│   ├── Routes.kt                   # Sistema de navegación (Screen sealed class)
+│   └── BottomNavigationScreens.kt  # Configuración de navegación inferior
 ├── network/
-│   └── TMDBApiService.kt       # Interfaz de Retrofit para TMDB API
+│   └── TMDBApiService.kt           # Interfaz de Retrofit para TMDB API
 ├── repository/
-│   └── MediaRepository.kt      # Repositorio con llamadas a la API
+│   └── MediaRepository.kt          # Repositorio con llamadas a la API
 ├── view/
-│   ├── MediaListScreen.kt      # Pantalla de lista de contenido
-│   ├── MediaDetailScreen.kt    # Pantalla de detalle
+│   ├── MediaListScreen.kt          # Pantalla de lista de contenido
+│   ├── MediaDetailScreen.kt        # Pantalla de detalle
+│   ├── FavoriteScreen.kt           # Pantalla de favoritos
 │   └── components/
-│       └── MediaItem.kt        # Componente de cada item
+│       ├── MediaItem.kt            # Componente de cada item
+│       ├── MyTopAppBar.kt          # Barra superior con búsqueda
+│       ├── MyBottomBar.kt          # Barra de navegación inferior
+│       └── SearchBarView.kt        # Componente de búsqueda
 ├── viewmodel/
-│   └── MediaViewModel.kt       # Lógica y gestión de estado con corrutines
+│   ├── MediaViewModel.kt           # Lógica y gestión de estado con corrutines
+│   └── SearchBarViewModel.kt       # Lógica de búsqueda
 ├── ui/theme/
-│   ├── Color.kt                # Colores y estilos
-│   ├── Theme.kt                # Tema de la app
-│   └── Type.kt                 # Tipografía
-├── Routes.kt                   # Sistema de navegación
-└── MainActivity.kt             # Actividad principal
+│   ├── Color.kt                    # Colores y estilos
+│   ├── Theme.kt                    # Tema de la app
+│   └── Type.kt                     # Tipografía
+└── MainActivity.kt                 # Actividad principal
 ```
 
 ## 🚀 Tecnologías Utilizadas
@@ -121,9 +130,18 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con LiveData para g
 - Las corrutinas se cancelan automáticamente cuando el ViewModel se destruye
 
 ### Navegación
-- Sistema de rutas con sealed class
-- Navegación entre pantallas:
-  - `ListScreen` → `DetailScreen` → vuelta con botón
+- **Package dedicado `nav/`** para organizar componentes de navegación
+- **Routes.kt**: Sistema de rutas con sealed class `Screen`
+  - `ListScreen`: Pantalla principal de lista de contenido
+  - `DetailScreen`: Pantalla de detalle de película/serie
+  - `FavoriteScreen`: Pantalla de contenido favorito
+- **BottomNavigationScreens.kt**: Configuración de navegación inferior con iconos
+  - `Home`: Navegación a lista principal
+  - `Favorite`: Navegación a favoritos
+- **Flujo de navegación**:
+  - `ListScreen` ↔ `DetailScreen` (con botón volver)
+  - `BottomBar` con navegación entre `Home` y `Favoritos`
+  - `TopAppBar` con funcionalidad de búsqueda dinámica
 
 ### LazyColumn
 - Renderizado eficiente de la lista
