@@ -40,7 +40,7 @@ fun MyBottomBar(navController: NavHostController) {
                     if (currentRoute != item.route) {
                         navController.navigate(item.route)
                     } else if (item.route == Screen.ListScreen.route) {
-                        // Si ya estás en Home, navegar de nuevo para resetear el estado
+                        // Si ya estás en Home, navegas de nuevo para resetear el estado
                         navController.navigate(item.route) {
                             popUpTo(Screen.ListScreen.route) {
                                 inclusive = true
