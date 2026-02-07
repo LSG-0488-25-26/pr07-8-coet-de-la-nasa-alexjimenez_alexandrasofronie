@@ -1,4 +1,4 @@
-    package com.example.pr06_lazycomponents.view
+package com.example.pr06_lazycomponents.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,40 +24,59 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.BorderStroke
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.pr06_lazycomponents.model.Media
 import com.example.pr06_lazycomponents.model.MediaType
 import com.example.pr06_lazycomponents.ui.theme.getGenreColor
+import com.example.pr06_lazycomponents.view.components.FavoriteButton
+import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 
 @Composable
 fun MediaDetailScreen(
     media: Media,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: MediaViewModel
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Spacer(modifier = Modifier.height(24.dp))
-            Card(
+            Box(
                 modifier = Modifier
-                    .size(width = 200.dp, height = 300.dp),
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(4.dp, getGenreColor(media.genre))
-
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                FavoriteButton(
+                    media = media,
+                    viewModel = viewModel,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Card(
+                    modifier = Modifier
+                        .size(width = 200.dp, height = 300.dp)
+                        .align(Alignment.TopCenter),
+                    shape = RoundedCornerShape(16.dp),
+                    border = BorderStroke(4.dp, getGenreColor(media.genre))
+
                 ) {
-                    @OptIn(ExperimentalGlideComposeApi::class)
-                    GlideImage(
-                        model = media.imageUrl,
-                        contentDescription = "Póster de ${media.title}",
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        @OptIn(ExperimentalGlideComposeApi::class)
+                        GlideImage(
+                            model = media.imageUrl,
+                            contentDescription = "Póster de ${media.title}",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
 
@@ -180,7 +199,7 @@ fun MediaDetailScreen(
                         modifier = Modifier.padding(16.dp)
                     )
                 }
-                }
+            }
 
             Spacer(modifier = Modifier.height(13.dp))
         }

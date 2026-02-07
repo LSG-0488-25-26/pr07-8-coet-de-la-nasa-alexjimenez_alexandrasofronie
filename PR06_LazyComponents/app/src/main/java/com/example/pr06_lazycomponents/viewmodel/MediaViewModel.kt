@@ -35,6 +35,12 @@ class MediaViewModel : ViewModel() {
     private val _isSearchBarVisible = MutableLiveData(false)
     val isSearchBarVisible: LiveData<Boolean> get() = _isSearchBarVisible
 
+    private val _favoritesList = MutableLiveData<List<Media>>(emptyList())
+    val favoritesList: LiveData<List<Media>> get() = _favoritesList
+
+    private val _favoritesIds = MutableLiveData<Set<Int>>(emptySet())
+    val favoritesIds: LiveData<Set<Int>> get() = _favoritesIds
+
     init {
         loadMedia()
     }
@@ -91,4 +97,25 @@ class MediaViewModel : ViewModel() {
     fun setSearchBarVisibility(visible: Boolean) {
         _isSearchBarVisible.value = visible
     }
+
+    fun toggleFavorite(media: Media) {
+        val currentIds = _favoritesIds.value ?: emptySet()
+        val currentFavorites = _favoritesList.value ?: emptyList()
+
+        if (media.id in currentIds) {
+            // Remover de favoritos
+            _favoritesIds.value = currentIds - media.id
+            _favoritesList.value = currentFavorites.filter { it.id != media.id }
+        } else {
+            // Agregar a favoritos
+            _favoritesIds.value = currentIds + media.id
+            _favoritesList.value = currentFavorites + media
+        }
+    }
+
+    // Verificar si un media es favorito
+    fun isFavorite(mediaId: Int): Boolean {
+        return _favoritesIds.value?.contains(mediaId) ?: false
+    }
+
 }

@@ -155,7 +155,8 @@ fun MyAppNavHost(
             if (selectedMedia != null) {
                 MediaDetailScreen(
                     media = selectedMedia,
-                    onBackClick = { navController.navigateUp() }
+                    onBackClick = { navController.navigateUp() },
+                    viewModel = viewModel
                 )
             }
         }
@@ -164,45 +165,13 @@ fun MyAppNavHost(
             LaunchedEffect(Unit) {
                 viewModel.setSearchBarVisibility(false)
             }
-            FavoriteScreen()
+            FavoriteScreen(
+                onMediaClick = { media ->
+                    viewModel.selectMedia(media)
+                    navController.navigate(Screen.DetailScreen.route)
+                },
+                viewModel = viewModel
+            )
         }
-    }
-}
-
-//Preview para MediaListScreen
-@Preview(showBackground = true, name = "Media List Screen")
-@Composable
-fun MediaListScreenPreview() {
-    PR06_LazyComponentsTheme {
-        MediaListScreen(
-            viewModel = viewModel(),
-            onMediaClick = { }
-        )
-    }
-}
-
-//Preview para MediaDetailScreen
-@Preview(showBackground = true, name = "Media Detail Screen")
-@Composable
-fun MediaDetailScreenPreview() {
-    PR06_LazyComponentsTheme {
-        MediaDetailScreen(
-            media = Media(
-                id = 1,
-                title = "Inception",
-                mediaType = MediaType.MOVIE,
-                genre = "Ciencia Ficción",
-                imageUrl = "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
-                year = 2010,
-                rating = 8.8,
-                description = "Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños.",
-                details = MediaDetails(
-                    duration = "2h 28min",
-                    director = "Christopher Nolan",
-                    cast = listOf("Leonardo DiCaprio", "Joseph Gordon-Levitt")
-                )
-            ),
-            onBackClick = { }
-        )
     }
 }
