@@ -138,7 +138,9 @@ fun MediaListScreen(
             else -> {
                 if (currentSearchQuery.isNotEmpty()) {
                     Text(
-                        text = "Encontrados: ${mediaList.size} resultado${if (mediaList.size != 1) "s" else ""}",
+                        text = "Encontrados: ${mediaList.size} resultado${
+                            if (mediaList.size != 1) "s" else ""
+                        }",
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
