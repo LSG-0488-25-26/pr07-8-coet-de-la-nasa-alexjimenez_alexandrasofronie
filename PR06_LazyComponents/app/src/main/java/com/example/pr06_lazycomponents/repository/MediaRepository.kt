@@ -9,6 +9,14 @@ import com.example.pr06_lazycomponents.network.TMDBApiService
 class MediaRepository {
     private val apiService = TMDBApiService.create()            
     private val apiKey = "2eeb8acfafa6759fbf6a31759683f0b2"     //API KEY de TMDB
+
+    // Variables para controlar la paginación
+    private var currentMoviesPage = 1
+    private var currentSeriesPage = 1
+    private var totalMoviesPages = 1
+    private var totalSeriesPages = 1
+    private var moviesLoaded = 0
+    private var seriesLoaded = 0
     
     /*
         Obtenemos la lista combinada de películas y series desde la API de TMDB.
@@ -17,8 +25,13 @@ class MediaRepository {
         si hay un error
     */
     
-    suspend fun getMediaList(): List<Media> {       //suspend fun para usar las corrutines
+    suspend fun getMediaList(): List<Media> {
         return try {
+            currentMoviesPage = 1
+            currentSeriesPage = 1
+            moviesLoaded = 0
+            seriesLoaded = 0
+
             val mediaList = mutableListOf<Media>()
             
             // Obtenemos las películas populares
@@ -27,11 +40,14 @@ class MediaRepository {
             if (moviesResponse.isSuccessful) {      //Comprobamos si la petición de la APi fue correcta
                 val moviesBody = moviesResponse.body()
                 if (moviesBody != null) {
+                    totalMoviesPages = moviesBody.total_pages.coerceAtMost(500)
                     val movies = moviesBody.results
-                    for (movie in movies.take(15)) {
+                    for (movie in movies.take(10)) {
                         val details = getMovieDetails(movie.id)
                         mediaList.add(movie.toMedia(details))
                     }
+                    moviesLoaded = movies.size
+                    currentMoviesPage++
                     /*
                     Convierte cada Result_Movies a Media usando
                     la función de extensión toMedia() creada en Media.kt
@@ -48,11 +64,14 @@ class MediaRepository {
             if (seriesResponse.isSuccessful) {
                 val seriesBody = seriesResponse.body()
                 if (seriesBody != null) {
+                    totalSeriesPages = seriesBody.total_pages.coerceAtMost(500)
                     val series = seriesBody.results
-                    for (serie in series.take(15)) {
+                    for (serie in series.take(10)) {
                         val details = getSeriesDetails(serie.id)
                         mediaList.add(serie.toMedia(details))
                     }
+                    seriesLoaded = series.size
+                    currentSeriesPage++
                     Log.d("MediaRepository", "Series cargadas: ${series.size}")
                 }
             } else {
@@ -68,6 +87,114 @@ class MediaRepository {
         }
     }
 
+    // Cargar más películas
+    suspend fun loadMoreMovies(): List<Media> {
+        return try {
+            if (currentMoviesPage > totalMoviesPages) {
+                return emptyList()
+            }
+
+            val mediaList = mutableListOf<Media>()
+            val moviesResponse = apiService.getPopularMovies(apiKey, "es-ES", page = currentMoviesPage)
+
+            if (moviesResponse.isSuccessful) {
+                val moviesBody = moviesResponse.body()
+                if (moviesBody != null) {
+                    val movies = moviesBody.results
+
+                    // Solo cargar detalles para un subconjunto para no sobrecargar
+                    for (movie in movies.take(5)) {
+                        val details = getMovieDetails(movie.id)
+                        mediaList.add(movie.toMedia(details))
+                    }
+
+                    moviesLoaded += movies.size
+                    currentMoviesPage++
+
+                    Log.d("MediaRepository", "Más películas cargadas (página $currentMoviesPage): ${movies.size}")
+                }
+            }
+
+            mediaList
+
+        } catch (e: Exception) {
+            Log.e("MediaRepository", "Excepción al cargar más películas: ${e.message}")
+            emptyList()
+        }
+    }
+
+    // Cargar más series
+    suspend fun loadMoreSeries(): List<Media> {
+        return try {
+            if (currentSeriesPage > totalSeriesPages) {
+                return emptyList()
+            }
+
+            val mediaList = mutableListOf<Media>()
+            val seriesResponse = apiService.getPopularSeries(apiKey, "es-ES", page = currentSeriesPage)
+
+            if (seriesResponse.isSuccessful) {
+                val seriesBody = seriesResponse.body()
+                if (seriesBody != null) {
+                    val series = seriesBody.results
+
+                    for (serie in series.take(5)) {
+                        val details = getSeriesDetails(serie.id)
+                        mediaList.add(serie.toMedia(details))
+                    }
+
+                    seriesLoaded += series.size
+                    currentSeriesPage++
+
+                    Log.d("MediaRepository", "Más series cargadas (página $currentSeriesPage): ${series.size}")
+                }
+            }
+
+            mediaList
+
+        } catch (e: Exception) {
+            Log.e("MediaRepository", "Excepción al cargar más series: ${e.message}")
+            emptyList()
+        }
+    }
+
+    // Cargar más contenido (mezcla de películas y series)
+    suspend fun loadMoreMedia(): List<Media> {
+        return try {
+            val moreMedia = mutableListOf<Media>()
+
+            // Alternar entre cargar películas y series
+            if (moviesLoaded <= seriesLoaded) {
+                moreMedia.addAll(loadMoreMovies())
+            } else {
+                moreMedia.addAll(loadMoreSeries())
+            }
+
+            // Si no se cargó nada de uno, intentar con el otro
+            if (moreMedia.isEmpty()) {
+                if (moviesLoaded <= seriesLoaded) {
+                    moreMedia.addAll(loadMoreSeries())
+                } else {
+                    moreMedia.addAll(loadMoreMovies())
+                }
+            }
+
+            Log.d("MediaRepository", "Más media cargados: ${moreMedia.size}")
+            moreMedia
+
+        } catch (e: Exception) {
+            Log.e("MediaRepository", "Excepción al cargar más media: ${e.message}")
+            emptyList()
+        }
+    }
+
+
+    fun resetPagination() {
+        currentMoviesPage = 1
+        currentSeriesPage = 1
+        moviesLoaded = 0
+        seriesLoaded = 0
+    }
     private suspend fun getMovieDetails(movieId: Int): MediaDetails? {
         return try {
             val response = apiService.getMovieDetails(movieId, apiKey, "es-ES")

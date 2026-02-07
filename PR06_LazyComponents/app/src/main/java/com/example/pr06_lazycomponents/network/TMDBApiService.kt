@@ -18,7 +18,8 @@ interface TMDBApiService {
     @GET("movie/popular")
     suspend fun getPopularMovies(
         @Query("api_key") apiKey: String,
-        @Query("language") language: String = "es-ES"
+        @Query("language") language: String = "es-ES",
+        @Query("page") page: Int = 1
     ): Response<TMDB_Response_Movies>
 
     
@@ -26,7 +27,8 @@ interface TMDBApiService {
     @GET("tv/popular")
     suspend fun getPopularSeries(
         @Query("api_key") apiKey: String,
-        @Query("language") language: String = "es-ES"
+        @Query("language") language: String = "es-ES",
+        @Query("page") page: Int = 1
     ): Response<TMD_Response_Series>
 
     // Endpoint para obtener detalles completos de una película

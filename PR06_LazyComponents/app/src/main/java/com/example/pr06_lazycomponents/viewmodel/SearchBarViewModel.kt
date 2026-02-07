@@ -37,7 +37,7 @@ class SearchBarViewModel : ViewModel() {
         _searchHistory.value = emptyList()
     }
 
-    fun clearSearchText() {
+    fun clearSearch(){
         _searchedText.value = ""
     }
 }

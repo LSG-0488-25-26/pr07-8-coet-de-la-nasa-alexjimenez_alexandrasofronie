@@ -39,7 +39,8 @@ import com.example.pr06_lazycomponents.viewmodel.SearchBarViewModel
 @Composable
 fun SearchBarView(
     myViewModel: SearchBarViewModel,
-    onSearch: (String) -> Unit = {}
+    onSearch: (String) -> Unit = {},
+    onClear: () -> Unit = {}
 ) {
     val searchedText by myViewModel.searchedText.observeAsState("")
     val searchHistory by myViewModel.searchHistory.observeAsState(emptyList())
@@ -61,6 +62,7 @@ fun SearchBarView(
                     onSearch(query)
                 } else {
                     onSearch("")
+                    onClear()
                 }
                 active = false
                 myViewModel.onSearchTextChange("")
@@ -82,6 +84,7 @@ fun SearchBarView(
                         modifier = Modifier.clickable {
                             myViewModel.onSearchTextChange("")
                             onSearch("")
+                            onClear()
                             active = false
                         }
                     )

@@ -25,6 +25,9 @@ class MediaViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _isLoadingMore = MutableLiveData<Boolean>(false)
+    val isLoadingMore: LiveData<Boolean> get() = _isLoadingMore
+
     // Estado de búsqueda
     private val _isSearching = MutableLiveData(false)
     val isSearching: LiveData<Boolean> get() = _isSearching
@@ -35,6 +38,9 @@ class MediaViewModel : ViewModel() {
     private val _isSearchBarVisible = MutableLiveData(false)
     val isSearchBarVisible: LiveData<Boolean> get() = _isSearchBarVisible
 
+    private val _canLoadMore = MutableLiveData<Boolean>(true)
+    val canLoadMore: LiveData<Boolean> get() = _canLoadMore
+
     private val _favoritesList = MutableLiveData<List<Media>>(emptyList())
     val favoritesList: LiveData<List<Media>> get() = _favoritesList
 
@@ -42,7 +48,7 @@ class MediaViewModel : ViewModel() {
     val favoritesIds: LiveData<Set<Int>> get() = _favoritesIds
 
     init {
-        loadMedia()
+        loadInitialMedia()
     }
 
     /*
@@ -50,13 +56,37 @@ class MediaViewModel : ViewModel() {
     Ejecuta la llamada en viewModelScope para que se cancele automáticamente
     si el ViewModel deja de usarse.
     */
-    private fun loadMedia() {
+    private fun loadInitialMedia() {
         viewModelScope.launch {
             _isLoading.value = true
             val media = repository.getMediaList()
             _allMediaList.value = media
             _mediaList.value = media
             _isLoading.value = false
+        }
+    }
+
+    fun loadMoreMedia() {
+        if (_isLoadingMore.value == true || _canLoadMore.value == false) {
+            return
+        }
+
+        viewModelScope.launch {
+            _isLoadingMore.value = true
+            val moreMedia = repository.loadMoreMedia()
+
+            if (moreMedia.isNotEmpty()) {
+                val currentAllMedia = _allMediaList.value ?: emptyList()
+                val currentMedia = _mediaList.value ?: emptyList()
+
+                _allMediaList.value = currentAllMedia + moreMedia
+                _mediaList.value = currentMedia + moreMedia
+            } else {
+                // No hay más contenido
+                _canLoadMore.value = false
+            }
+
+            _isLoadingMore.value = false
         }
     }
 
@@ -83,6 +113,13 @@ class MediaViewModel : ViewModel() {
 
         _mediaList.value = filteredList
         _isSearching.value = false
+    }
+
+    fun clearSearch() {
+        _currentSearchQuery.value = ""
+        _mediaList.value = _allMediaList.value
+        _canLoadMore.value = true
+        repository.resetPagination()
     }
 
     fun selectMedia(media: Media) {
