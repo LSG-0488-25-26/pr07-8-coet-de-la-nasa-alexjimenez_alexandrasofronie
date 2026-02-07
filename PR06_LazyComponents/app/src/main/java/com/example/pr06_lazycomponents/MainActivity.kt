@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -13,9 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,6 +28,7 @@ import com.example.pr06_lazycomponents.view.MediaListScreen
 import com.example.pr06_lazycomponents.view.components.MyBottomBar
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 import com.example.pr06_lazycomponents.view.FavoriteScreen
+import com.example.pr06_lazycomponents.view.SearchScreen
 import com.example.pr06_lazycomponents.view.components.MyTopAppBar
 
 class MainActivity : ComponentActivity() {
@@ -173,5 +170,56 @@ fun MyAppNavHost(
                 viewModel = viewModel
             )
         }
+    }
+}
+
+//Preview para MediaListScreen
+@Preview(showBackground = true, name = "Media List Screen")
+@Composable
+fun MediaListScreenPreview() {
+    PR06_LazyComponentsTheme {
+        MediaListScreen(
+            viewModel = viewModel(),
+            onMediaClick = { }
+        )
+    }
+}
+
+//Preview para MediaDetailScreen
+@Preview(showBackground = true, name = "Media Detail Screen")
+@Composable
+fun MediaDetailScreenPreview() {
+    PR06_LazyComponentsTheme {
+        MediaDetailScreen(
+            media = Media(
+                id = 1,
+                title = "Inception",
+                mediaType = MediaType.MOVIE,
+                genre = "Ciencia Ficción",
+                imageUrl = "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
+                year = 2010,
+                rating = 8.8,
+                description = "Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños.",
+                details = MediaDetails(
+                    duration = "2h 28min",
+                    director = "Christopher Nolan",
+                    cast = listOf("Leonardo DiCaprio", "Joseph Gordon-Levitt")
+                )
+            ),
+            onBackClick = { },
+            viewModel = viewModel()
+        )
+    }
+}
+
+//Preview para FavoriteScreen
+@Preview(showBackground = true, name = "Favorite Screen")
+@Composable
+fun FavoriteScreenPreview() {
+    PR06_LazyComponentsTheme {
+        FavoriteScreen(
+            viewModel = viewModel(),
+            onMediaClick = { }
+        )
     }
 }
