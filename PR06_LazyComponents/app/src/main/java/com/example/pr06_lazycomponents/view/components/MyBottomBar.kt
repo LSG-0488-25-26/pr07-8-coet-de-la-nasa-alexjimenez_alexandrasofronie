@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.pr06_lazycomponents.BottomNavigationScreens
-import com.example.pr06_lazycomponents.Screen
+import com.example.pr06_lazycomponents.nav.BottomNavigationScreens
+import com.example.pr06_lazycomponents.nav.Screen
 
 @Composable
 fun MyBottomBar(navController: NavHostController) {

@@ -22,13 +22,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pr06_lazycomponents.model.Media
 import com.example.pr06_lazycomponents.model.MediaDetails
 import com.example.pr06_lazycomponents.model.MediaType
+import com.example.pr06_lazycomponents.nav.Screen
 import com.example.pr06_lazycomponents.ui.theme.PR06_LazyComponentsTheme
 import com.example.pr06_lazycomponents.view.MediaDetailScreen
 import com.example.pr06_lazycomponents.view.MediaListScreen
 import com.example.pr06_lazycomponents.view.components.MyBottomBar
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
 import com.example.pr06_lazycomponents.view.FavoriteScreen
-import com.example.pr06_lazycomponents.view.SearchScreen
 import com.example.pr06_lazycomponents.view.components.MyTopAppBar
 
 class MainActivity : ComponentActivity() {

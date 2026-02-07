@@ -1,4 +1,4 @@
-package com.example.pr06_lazycomponents
+package com.example.pr06_lazycomponents.nav
 
 sealed class Screen(val route: String) {
     object ListScreen : Screen("list_screen")
