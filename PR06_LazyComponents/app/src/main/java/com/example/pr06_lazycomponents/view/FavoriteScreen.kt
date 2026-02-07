@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pr06_lazycomponents.view.components.MediaItem
 import com.example.pr06_lazycomponents.viewmodel.MediaViewModel
@@ -67,6 +68,8 @@ fun FavoriteScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "No hay favoritos aún",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -83,7 +86,16 @@ fun FavoriteScreen(
 
             else -> {
                 Text(
-                    text = "${favorites.size} favorito${if (favorites.size != 1) "s" else ""}",
+                    text = "${favorites.size} Favorito${
+                        if (favorites.size != 1) {
+                            "s"
+                        }
+                        else {
+                            ""
+                        }
+                    }",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
