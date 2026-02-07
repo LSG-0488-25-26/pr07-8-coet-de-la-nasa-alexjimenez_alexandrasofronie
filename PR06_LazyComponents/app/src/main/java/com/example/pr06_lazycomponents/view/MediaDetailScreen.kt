@@ -44,6 +44,9 @@ fun MediaDetailScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
+
+            Spacer(modifier = Modifier.height(18.dp))  // Spacer entre la toppbar y la foto de la película o serie
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
